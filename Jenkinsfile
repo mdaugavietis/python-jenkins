@@ -8,10 +8,8 @@ pipeline {
             steps {
               echo "Installing all pip dependencies..."
               git branch : 'main', poll: false, url: 'https://github.com/mtararujs/python-greetings'
-              sh 'ls -a'
               sh "python3 -m venv .venv"
-              sh 'ls -a'
-              sh ".venv/bin/pip3 install -r requirements.txt"
+              sh ".venv/bin/python3 -m pip install -r requirements.txt"
             }
         }
         stage('deploy-to-dev') {
@@ -64,9 +62,8 @@ def build() {
 
 def deploy(String env, int port){
     echo "Deploying the app to ${ env } environment..."
-    sh 'ls -a'
     sh "pm2 delete \"greetings-app-${ env }\" || true"
-    sh "pm2 start .venv/bin/app.py --name greetings-app-${ env } -- --port ${ port }"
+    sh "pm2 start .venv/bin/python3 app.py --name greetings-app-${ env } -- --port ${ port }"
 }
 
 def test(String env){
