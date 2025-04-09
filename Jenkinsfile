@@ -11,6 +11,9 @@ pipeline {
               sh 'ls'
               sh 'python3 -m venv .venv'
               sh 'source .venv/bin/activate'
+              sh 'echo $PATH'
+              sh 'which pip'
+              sh 'which pip3'
               sh 'pip3 install -r requirements.txt'
             }
         }
