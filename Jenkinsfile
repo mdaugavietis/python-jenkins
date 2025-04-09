@@ -64,7 +64,7 @@ def build() {
 
 def deploy(String env, int port){
     echo "Deploying the app to ${ env } environment..."
-    sh ".venv/bin/activate"
+    sh "source .venv/bin/activate"
     sh "pm2 delete \"greetings-app-${ env }\" || true"
     sh "pm2 start app.py --name greetings-app-${ env } -- --port ${ port }"
 }
