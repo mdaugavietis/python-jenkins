@@ -54,13 +54,9 @@ pipeline {
         }
     }
 }
-def build() {
-    echo 'Building of node application is starting..'
-    sh "npm install"
-    sh "npm test"
-}
 
 def deploy(String env, int port){
+    sh "pm2 list"
     echo "Deploying the app to ${ env } environment..."
     sh "pm2 delete \"greetings-app-${ env }\" || true"
     sh "pm2 start .venv/bin/python3 app.py --name greetings-app-${ env } -- --port ${ port }"
