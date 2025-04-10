@@ -4,6 +4,11 @@ pipeline {
       pollSCM('*/1 * * * *')
     }
     stages {
+        stage('clean') {
+            steps {
+              cleanWs()
+            }
+        }
         stage('install-pip-deps') {
             steps {
                 echo "Installing all pip dependencies..."
