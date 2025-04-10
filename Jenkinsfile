@@ -70,9 +70,9 @@ pipeline {
 def deploy(String env, int port){
     echo "Deploying the app to ${ env } environment..."
     dir ('app') {
-        sh "pm2 delete \\\"greetings-app-${ env }\\\" || true"
+        sh "pm2 delete 'greetings-app-${ env }' || true"
         sh 'ls'
-        sh "pm2 start \\\".venv/bin/python3 app.py\\\" --name greetings-app-${ env } -- --port ${ port }"
+        sh "pm2 start app.py --name 'greetings-app-${ env }' --interpreter .venv/bin/python3 -- --port ${ port }"
     }
 }
 
