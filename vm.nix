@@ -17,6 +17,10 @@
   virtualisation = {
     forwardPorts = [
       { from = "host"; host.port = 8080; guest.port = 8080; }
+      { from = "host"; host.port = 7001; guest.port = 7001; }
+      { from = "host"; host.port = 7002; guest.port = 7002; }
+      { from = "host"; host.port = 7003; guest.port = 7003; }
+      { from = "host"; host.port = 7004; guest.port = 7004; }
     ];
     diskSize = 3 * 1024;
     cores = 3;

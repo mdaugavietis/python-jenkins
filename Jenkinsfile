@@ -71,4 +71,5 @@ def test(String env){
     git branch : 'main', poll: false, url: 'https://github.com/mtararujs/course-js-api-framework' 
     sh "npm install"
     sh "npm run greetings greetings_${ env }"
+    sh 'pm2 list'
 }
