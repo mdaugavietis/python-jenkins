@@ -6,10 +6,22 @@ pipeline {
     stages {
         stage('install-pip-deps') {
             steps {
-              echo "Installing all pip dependencies..."
-              git branch : 'main', poll: false, url: 'https://github.com/mtararujs/python-greetings'
-              sh "python3 -m venv .venv"
-              sh ".venv/bin/python3 -m pip install -r requirements.txt"
+                echo "Installing all pip dependencies..."
+                dir ('app') {
+                    git branch : 'main', poll: false, url: 'https://github.com/mtararujs/python-greetings'
+                    sh "python3 -m venv .venv"
+                    sh ".venv/bin/python3 -m pip install -r requirements.txt"
+                }
+            }
+        }
+        // Venv dēļ man nedaudz vajadzēja pamainīt struktūru, jo iznāk, ka šis solis notīrīt venv mapīti
+        stage('install-tests') {
+            steps {
+                echo "Installing all test definitions..."
+                dir ('tests') {
+                    git branch : 'main', poll: false, url: 'https://github.com/mtararujs/course-js-api-framework' 
+                    sh "npm install"
+                }
             }
         }
         stage('deploy-to-dev') {
@@ -57,14 +69,16 @@ pipeline {
 
 def deploy(String env, int port){
     echo "Deploying the app to ${ env } environment..."
-    sh "pm2 delete \"greetings-app-${ env }\" || true"
-    sh 'ls'
-    sh "pm2 start \".venv/bin/python3 app.py\" --name greetings-app-${ env } -- --port ${ port }"
+    dir ('app') {
+        sh "pm2 delete \"greetings-app-${ env }\" || true"
+        sh 'ls'
+        sh "pm2 start \".venv/bin/python3 app.py\" --name greetings-app-${ env } -- --port ${ port }"
+    }
 }
 
 def test(String env){
     echo "Testing the app on ${ env } environment..."
-    git branch : 'main', poll: false, url: 'https://github.com/mtararujs/course-js-api-framework' 
-    sh "npm install"
-    sh "npm run greetings greetings_${ env } || true"
+    dir ('tests') {
+        sh "npm run greetings greetings_${ env }"
+    }
 }
