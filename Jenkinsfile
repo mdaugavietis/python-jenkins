@@ -57,7 +57,7 @@ pipeline {
 
 def deploy(String env, int port){
     sh '''
-    export BUILD_ID=dontKillMePlease
+    export JENKINS_NODE_COOKIE=dontKillMePlease
     pm2 list
     '''
     echo "Deploying the app to ${ env } environment..."
