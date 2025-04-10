@@ -1,6 +1,6 @@
 { pkgs, options, config, ... }:
 {
-  environment.systemPackages = with pkgs; [ kitty pm2 python3 nodejs_20 git bash];
+  environment.systemPackages = with pkgs; [ kitty pm2 python3 nodejs_20 git bash htop ];
 
   services.jenkins = {
     enable = true;

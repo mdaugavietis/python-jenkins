@@ -56,21 +56,15 @@ pipeline {
 }
 
 def deploy(String env, int port){
-    sh '''
-    export JENKINS_NODE_COOKIE=dontKillMePlease
-    pm2 list
-    '''
     echo "Deploying the app to ${ env } environment..."
     sh "pm2 delete \"greetings-app-${ env }\" || true"
+    sh 'ls'
     sh "pm2 start \".venv/bin/python3 app.py\" --name greetings-app-${ env } -- --port ${ port }"
 }
 
 def test(String env){
-    sh 'export JENKINS_NODE_COOKIE=dontKillMePlease'
-    sh 'pm2 list'
     echo "Testing the app on ${ env } environment..."
     git branch : 'main', poll: false, url: 'https://github.com/mtararujs/course-js-api-framework' 
     sh "npm install"
     sh "npm run greetings greetings_${ env } || true"
-    sh 'pm2 list'
 }
